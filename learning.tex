@@ -19,6 +19,7 @@
     \tableofcontents{}
 \end{frame}
 
+\section{Learning from Experts}
 \begin{frame}
     \frametitle{The Algorithm Designer}
 
@@ -47,15 +48,15 @@
         \begin{equation*}
             \mathcal{A} = \{ a~|~\ell_a^t \in [-1, 1]  \}
         \end{equation*}
-        
+
         $a$ can be:
         \begin{itemize}
             \item a strategy
             \item an algorithm
             \item a prediction
         \end{itemize}
-        
-        $t$ is a discretization of time.
+
+        $t$ is a round (discrete time).
     \end{block}
 
 \end{frame}
@@ -74,7 +75,7 @@
         \begin{itemize}
             \item Loss incurred by action $a$ over a certain number of rounds:
                 \begin{equation*}
-                    L_a = \sum_t \ell_a^t 
+                    L_a = \sum_t \ell_a^t
                 \end{equation*}
             \item Loss incurred by the best action in hindsight:
                 \begin{equation*}
@@ -89,14 +90,14 @@
     \frametitle{A surprising result}
 
     For a certain algorithm of expected loss $L$ (or gain $G$):
-    
+
     \begin{block}{Loss bound}
         \begin{equation*}
             L \leq L_a + \epsilon~|L_a| + \dfrac{\ln|\mathcal{A}|}{\epsilon},
             ~\forall a\in \mathcal{A}
         \end{equation*}
     \end{block}
-    
+
     \begin{block}{Gain guarantee}
         \begin{equation*}
             G \geq G_a - \epsilon~|G_a| - \dfrac{\ln |\mathcal{A}|}{\epsilon},
@@ -106,6 +107,7 @@
 
 \end{frame}
 
+\subsection{The multiplicative weights update algorithm}
 \begin{frame}
     \frametitle{Multiplicative weights}
     \framesubtitle{Compounding loss!}
@@ -150,6 +152,7 @@
 
 \end{frame}
 
+\subsection{Proving the loss bound}
 \begin{frame}
     \frametitle{$\Phi$: a potential function argument}
 
@@ -159,7 +162,7 @@
     \end{equation*}
 
     \begin{equation*}
-    \Phi^{t+1}  = \Phi^t - \epsilon \sum_a \lambda_a^t \ell_a^t 
+    \Phi^{t+1}  = \Phi^t - \epsilon \sum_a \lambda_a^t \ell_a^t
     \end{equation*}
 
     Recall that $\lambda_a^t = \Phi^t p_a^t$
@@ -336,7 +339,7 @@
     $\frac{\ln(1 + \epsilon)}{\epsilon} \geq 1 - \epsilon$ and
     $-\frac{\ln(1 - \epsilon)}{\epsilon} \leq 1 + \epsilon$
     we get:
-    
+
     \begin{block}{Done!}
     \begin{align*}
     L & \leq
@@ -345,7 +348,7 @@
     + \frac{\ln |\mathcal{A}|}{\epsilon} \\
     L & \leq
     \sum_t \ell_a^t
-    + \epsilon 
+    + \epsilon
     \underbrace{
     (- \sum_{< 0} \ell_a^t + \sum_{\geq 0} \ell_a^t)}_{\sum_{t} |\ell_a^t|}
     + \frac{\ln |\mathcal{A}|}{\epsilon} \\
@@ -368,7 +371,7 @@
     L \leq L_a + \epsilon~|L_a|
     +\frac{\ln |\mathcal{A}|}{\epsilon},~ \forall a\in \mathcal{A}
     \end{equation*}
-    
+
     In particular, with regard to the best action in hindsight:
 
     \begin{equation*}
@@ -413,6 +416,7 @@
 
 \end{frame}
 
+\section{Applications}
 \begin{frame}
     \frametitle{Applications}
 
@@ -430,19 +434,20 @@
 
     \begin{block}{Applicable yes but efficient?}
         Analysis of the algorithm is tight.
-        
+
         Given the same assumptions, no
         algorithm produces better bounds.
     \end{block}
 
 \end{frame}
 
+\subsection{Multicommodity flow}
 \begin{frame}
     \frametitle{The multicommodity flow problem}
 
     Given a capacitated graph together with a set of origin-destination pairs
     (representing a source and a target).
-    
+
     \begin{block}{Problem}
         Find the maximum amount of flow between origin-destination pairs that
         satisfies capacity constraints
@@ -460,7 +465,7 @@
 \end{frame}
 
 \begin{frame}
-    \frametitle{The maximum multicommodity flow as a LP} 
+    \frametitle{The maximum multicommodity flow as a LP}
     \framesubtitle{A path formulation}
 
     \begin{align*}
@@ -517,6 +522,7 @@
 
 \end{frame}
 
+\subsection{Designing a flow algorithm}
 \begin{frame}
     \frametitle{A primal-dual algorithm based on multiplicative weights}
 
@@ -531,7 +537,7 @@
             among all paths in $\mathcal{P}$ and choose all arcs $a$ on that
             path.
         \item The gain on each arc is given relative to the flow that saturates
-             $p^t$: 
+             $p^t$:
             \begin{equation*}
             f^t = \min_{a\in p^*} c_a
             \end{equation*}
@@ -543,7 +549,7 @@
         \end{array}
         \right.
             \end{equation*}
-            
+
         \item Compound gain
             \begin{equation*}
             l_a^{t+1} = l_a^t (1 + \epsilon~g_a^t)
@@ -553,6 +559,7 @@
 
 \end{frame}
 
+\subsection{Proving it correct}
 \begin{frame}
     \frametitle{Analysis}
 
@@ -578,7 +585,7 @@
         \begin{equation*}
             G \geq (1 - \epsilon) G_* - \dfrac{\ln |A|}{\epsilon}
         \end{equation*}
-        
+
         We set the probabilities $p_a^t = l_a^t / \Phi^t$ a posteriori, which
         gives:
         \begin{equation*}
@@ -608,7 +615,7 @@
             \item $F^* = \sum_q f_q^*$ is an optimal (feasible) flow
         \end{itemize}
     \end{block}
-    
+
     \begin{block}{Relating $G$ and the approximation}
 \begin{equation*}
 \dfrac{\sum_{a \in p^*} l_a / c_a}{\sum_a l_a}
@@ -626,7 +633,6 @@
 \begin{frame}
     \frametitle{Upper bounded by the optimal flow}
 
-    
     \begin{block}{Relating $G$ and the approximation}
 \begin{equation*}
 \dfrac{1}{ \sum_{q} f_q^*}
@@ -654,7 +660,7 @@ which gives the following bound:
 \begin{frame}
     \frametitle{Upper bounded by the optimal flow}
 
-    
+
     \begin{block}{Relating $G$ and the approximation}
     If we call $F = \sum_t f^t$ the flow given by our algorithm:
     \begin{equation*}
@@ -679,7 +685,7 @@ which gives the following bound:
     \dfrac{\hat{F}}{F^*} \geq (1 - \epsilon) - \frac{\ln|A|}{\epsilon C}
     \end{equation*}
     \end{block}
-    
+
     \begin{block}{Approximation guarantee}
     \begin{equation*}
         G_* = \frac{\ln|A|}{\epsilon^2}
@@ -739,11 +745,20 @@ which gives the following bound:
         Practical benefits:
         \begin{itemize}
             \item simple implementation (16 lines of Python)
+            \item very fast for $\epsilon \approx 10^{-1}$
             \item simple analysis
-            \item can be applied to similar topics
+            \item adaptable to any convex setting!
         \end{itemize}
     \end{block}
 
+\end{frame}
+
+\begin{frame}
+    \frametitle{Any questions?}
+
+    \begin{center}
+        \huge{Thank you!}
+    \end{center}
 \end{frame}
 
 \end{document}
