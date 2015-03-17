@@ -49,14 +49,15 @@
             \mathcal{A} = \{ a~|~\ell_a^t \in [-1, 1]  \}
         \end{equation*}
 
-        $a$ can be:
+        \begin{itemize}
+            \item $a$ can be:
         \begin{itemize}
             \item a strategy
             \item an algorithm
             \item a prediction
         \end{itemize}
-
-        $t$ is a round (discrete time).
+            \item $t$ is a round (discrete time)
+        \end{itemize}
     \end{block}
 
 \end{frame}
@@ -89,7 +90,7 @@
 \begin{frame}
     \frametitle{A surprising result}
 
-    For a certain algorithm of expected loss $L$ (or gain $G$):
+    For a certain algorithm with expected loss $L$ (or gain $G$):
 
     \begin{block}{Loss bound}
         \begin{equation*}
@@ -759,6 +760,67 @@ which gives the following bound:
     \begin{center}
         \huge{Thank you!}
     \end{center}
+\end{frame}
+
+\begin{frame}
+    \frametitle{Applications}
+
+    \begin{block}{Wide variety of domains}
+        \begin{itemize}
+            \item Stock market prediction $\leftarrow$ \alert{today?}
+            \item \ldots
+        \end{itemize}
+    \end{block}
+
+    \begin{block}{Setting}
+        \begin{itemize}
+            \item $\mathcal{A}$: financial experts predicting \{up, down\}
+            \item $\ell_a^t = \left\{
+        \begin{array}{l l}
+        1 & \text{if expert $a$ got it wrong at round $t$}\\
+        0 & \text{otherwise}
+        \end{array}
+        \right.$
+    \item $L$, $L_a$, $L_*$: (expected) number of mistakes
+\end{itemize}
+    \end{block}
+
+    \begin{block}{Result}
+        \begin{equation*}
+            L \leq (1 + \epsilon)L_* + \dfrac{\ln |\mathcal{A}|}{\epsilon}
+        \end{equation*}
+    \end{block}
+    
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Also available in $[-\rho, \rho]$!}
+
+    \begin{block}{Weaker bound on the loss}
+        \begin{equation*}
+            \ell_a^t \in [-\rho, \rho]
+        \end{equation*}
+    \end{block}
+
+    \begin{block}{How long until I feel no regret?}
+        Roughly, to achieve arbitrary regret of $\epsilon$:
+        \begin{equation*}
+        O(\rho^2 \ln |\mathcal{A}|~\epsilon^{-2}) \text{iterations}
+        \end{equation*}
+        and your runtime per iteration might depend on the width too!
+    \end{block}
+
+\end{frame}
+
+\begin{frame}
+    \frametitle{Bibliography}
+
+    \begin{thebibliography}{9}
+        \bibitem{A01} Sanjeev Arora, Elad Hazan and Satyen Kale \newblock
+            ``The Multiplicative Weights Update Method:\\ A Meta-Algorithm and
+            Applications''. \newblock Theory of Computing 2012.
+    \end{thebibliography}
 \end{frame}
 
 \end{document}
